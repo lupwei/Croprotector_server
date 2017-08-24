@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个映射指定一个唯一的名字空间 -->
+<mapper namespace="mapping.userMapper">
+
+<!-- 根据phonenumber查询得到一个用户 -->
+<select id="getUser" parameterType="String" resultType="User">
+    select * from user where phonenumber=#{phonenumber}
+</select>
+
+<!-- 创建用户 -->
+<insert id="createUser" parameterType="User">
+    insert into user(phonenumber,password) values(#{phonenumber},#{password}) 
+</insert>
+
+<!-- 删除用户 -->
+<delete id="deleteUser" parameterType="String">
+    delete from user where phonenumber=#{phonenumber}
+</delete>
+
+<!-- 修改用户（密码） -->
+<update id="updateUser" parameterType="User">
+    update user set password=#{password} where phonenumber=#{phonenumber}
+</update>
+
+<!-- 查询全部用户 -->
+<select id="getAllUser" resultType="User">
+    select * from user
+</select>
+
+
+</mapper>

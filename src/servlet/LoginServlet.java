@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dbutil.DBUtil;
+import com.google.gson.Gson;
+
+import entity.User;
 import net.sf.json.JSONObject;
 
 /**
@@ -32,6 +34,22 @@ public class LoginServlet extends HttpServlet {
         
     }
 
+    @Override
+    protected void service(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+    	String method=request.getMethod();
+    	if(method.equals("GET")) {
+    		System.out.println("请求方法：GET");
+    		doGet(request,response);
+    	}
+    	else if(method.equals("POST")) {
+    		System.out.println("请求方法：POST");
+    		doPost(request,response);
+    	}
+    	else {
+    		System.out.println("请求方法无法识别！");
+    	}
+    }
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -43,41 +61,34 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //第一步：获取客户端发来的请求，恢复json格式
+       
 		CommonRequest req=new CommonRequest();
-        req.setReqstr(request);
-        req.setRequestCode();                     //接口号，暂时好像用不上
-		req.setRequestParam();
-		JSONObject Param=req.getRequestParam();
+		req.setReqstr(request);
+		String jsonStr=req.getReq();
+        User user1=new User();
+        Gson gson=new Gson();
+        user1=gson.fromJson(jsonStr,User.class);
 		
-		//第二步：将json化为别的数据结构使用，进行业务处理，生成结果
-		String sql=String.format("SELECT * FROM %s WHERE phonenumber='%s'",
-				DBUtil.TABLE_USER,Param.getString("phonenumber"));
-		System.out.println("查询sql语句为："+sql);
 		
 		CommonResponse res=new CommonResponse();
-		try {
-			ResultSet result=DBUtil.query(sql);
-			if(result.next()) {                        //用户名与数据库匹配，判断密码是否相符
-				if(result.getString("password").equals(Param.getString("password"))) {
-					res.setResMsg("登录成功");
-				}
-				else {
-					res.setResMsg("登录失败，密码错误");
-				}
+		User user2=user1.get();
+		if(user2 != null) {                        //用户名与数据库匹配，判断密码是否相符
+			if(user1.getPassword()==user2.getPassword()) {
+				res.setResMsg("登录成功");
 			}
 			else {
-				res.setResMsg("该手机号未注册");
+				res.setResMsg("登录失败，密码错误");
 			}
-		} catch (SQLException e) {
-			res.setResMsg("数据库查询错误");
-			e.printStackTrace();
+		}
+		else {
+			res.setResMsg("该手机号未注册");
 		}
 		
-		//将结果封装成json格式返回给客户端,但实际网络传输时还是传输json的字符串
+		//第三步：将结果封装成json格式返回给客户端,但实际网络传输时还是传输json的字符串
 		//json只是提供了特定的字符串拼接格式
-		String resStr=JSONObject.fromObject(res).toString();
+		String resStr=gson.toJson(res);
 		System.out.println("返回报文的json字符串为："+resStr);
+		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw=response.getWriter();
 		pw.println(resStr);
 		pw.flush();

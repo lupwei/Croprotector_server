@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapping.selectdiseaseMapper">
+	<!-- 根据phonenumber查询得到selectdisease对象 -->
+	<select id="getByPhoneNumber" parameterType="String" resultType="SelectDisease">
+		select * from selectdisease where phonenumber=#{phonenumber}
+	</select>
+	
+	<!-- 根据diseaseNo查询得到selectdisease对象 -->
+	<select id="getByDiseaseNo" parameterType="String" resultType="SelectDisease">
+		select * from selectdisease where diseaseNo=#{diseaseNo}
+	</select>
+	
+	<!-- 创建selectdisease -->
+	<insert id="addSelectDisease" parameterType="SelectDisease">
+	    insert into selectdisease(phonenumber,diseaseNo) values(#{phonenumber},#{diseaseNo})
+	</insert>
+	
+	<!-- 删除selectdisease -->
+	<delete id="deleteByPhoneNumber" parameterType="String">
+		delete from selectdisease where phonenumber=#{phonenumber}
+	</delete>
+	
+	<!-- 删除selectdisease -->
+	<delete id="deleteByDiseaseNo" parameterType="String">
+		delete from selectdisease where diseaseNo=#{diseaseNo}
+	</delete>
+	
+	<!-- 查询全部selectdisease -->
+	<select id="getAllSelectDisease" resultType="SelectDisease">
+		select * from selectdisease
+	</select>
+	
+</mapper>
