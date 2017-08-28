@@ -62,7 +62,7 @@ public class ChangePasswordServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
-		CommonRequest req=new CommonRequest();
+		CommonRequest req = new CommonRequest();
 		req.setReqstr(request);
 		String jsonStr = req.getReq();
         User user_req = new User();
@@ -77,10 +77,19 @@ public class ChangePasswordServlet extends HttpServlet {
         // Find user in database, check if the new password is valid
 		if(user_db != null) {
             String newPassword = user_req.getPassword();
+            // password is supposed to check both at server and at client
             // if(isValid(newPassword));
 			user_db.setPassword(newPassword);
-			user_db.update()
-			res.setResMsg("重置密码成功");
+            int res = user_db.update();
+            if(res > 0) {
+                res.setCode(0)
+                res.setResMsg("重置密码成功");
+            }
+            else {
+                res.setCode(-1)
+                res.setResMsg("重置密码失败");
+            }
+			
         }
         // User doesn't exist
 		else {
@@ -90,12 +99,11 @@ public class ChangePasswordServlet extends HttpServlet {
 		
 		//第三步：将结果封装成json格式返回给客户端,但实际网络传输时还是传输json的字符串
 		//json只是提供了特定的字符串拼接格式
-		String resStr=gson.toJson(res);
-		System.out.println("返回报文的json字符串为："+resStr);
+		String resStr = gson.toJson(res);
+		System.out.println("返回报文的json字符串为：" + resStr);
 		response.setContentType("text/html;charset=utf-8");
-		PrintWriter pw=response.getWriter();
+		PrintWriter pw = response.getWriter();
 		pw.println(resStr);
 		pw.flush();
 	}
-
 }
