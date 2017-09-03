@@ -27,6 +27,13 @@
 		
 		<!-- 注册selectdiseaseMapper -->
 		<mapper resource="mapping/selectdiseaseMapper.xml"/>
+		
+		<!-- 注册diseasekindMapper -->
+		<mapper resource="mapping/diseasekindMapper.xml"/>
+		
+		<!-- 注册diseaseinfoMapper -->
+		<mapper resource="mapping/diseaseinfoMapper.xml"/>
+		
 	</mappers>   
    
    

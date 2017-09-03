@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 为这个映射指定一个唯一的名字空间 -->
+<mapper namespace="mapping.diseaseinfoMapper">
+
+<!-- 根据infoNo查询得到一个diseaseinfo对象,带diseasekind信息-->
+<select id="getByInfoNo" parameterType="String" resultMap="DiseaseInfoResultMap">
+	select * from diseaseinfo,diseasekind where diseaseinfo.diseaseNo=diseasekind.diseaseNo and diseaseinfo.infoNo=#{infoNo}
+</select>
+<!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+	<id property="infoNo" column="infoNo"/>
+	<result property="picture" column="picture"/>
+	<result property="time" column="time"/>
+	<result property="longitude" column="longitude"/>
+	<result property="latitude" column="latitude"/>
+	<result property="phonenumber" column="phonenumner"/>
+	<association property="diseasekind" javaType="DiseaseKind">
+		<id property="diseaseNo" column="diseaseNo"/>
+		<result property="diseaseName" column="diseaseName"/>
+	</association>
+</resultMap>
+
+<!-- 根据时间查询得到一组diseaseinfo对象 -->
+<select id="getByTime" resultMap="DiseaseInfo">
+	select * from diseaseinfo,diseasekind where cast(diseaseinfo.time as datetime) between #{time1} and #{time2} and diseaseinfo.phonenumber=#{phonenumber} and diseaseinfo.diseaseNo=diseasekind.diseaseNo
+</select>
+<!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+	<id property="infoNo" column="infoNo"/>
+	<result property="picture" column="picture"/>
+	<result property="time" column="time"/>
+	<result property="longitude" column="longitude"/>
+	<result property="latitude" column="latitude"/>
+	<result property="phonenumber" column="phonenumner"/>
+	<association property="diseasekind" javaType="DiseaseKind">
+		<id property="diseaseNo" column="diseaseNo"/>
+		<result property="diseaseName" column="diseaseName"/>
+	</association>
+</resultMap>
+
+<!-- 根据phonenumber查询得到一组diseaseinfo对象 -->
+<select id="getByPhonenumber" parameterType="String" resultType="DiseaseInfo">
+	select * from diseaseinfo,diseasekind where diseaseinfo.phonenumber=#{phonenumber} and diseaseinfo.diseaseNo=diseasekind.diseaseNo
+</select>
+<!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+	<id property="infoNo" column="infoNo"/>
+	<result property="picture" column="picture"/>
+	<result property="time" column="time"/>
+	<result property="longitude" column="longitude"/>
+	<result property="latitude" column="latitude"/>
+	<result property="phonenumber" column="phonenumner"/>
+	<association property="diseasekind" javaType="DiseaseKind">
+		<id property="diseaseNo" column="diseaseNo"/>
+		<result property="diseaseName" column="diseaseName"/>
+	</association>
+</resultMap>
+
+
+<!-- 创建diseaseinfo对象 -->
+<insert id="addDiseaseInfo" parameterType="DiseaseInfo">
+	insert into diseaseinfo(infoNo,diseaseNo,picture,time,longitude,latitude,phonenumber) values(#{infoNo},#{diseaseNo},#{picture},#{time},#{longitude},#{latitude},#{phonenumber})
+</insert>
+
+
+<!-- 根据infoNo删除diseaseinfo对象 -->
+<delete id="deleteByInfoNo" parameterType="String">
+	delete from diseaseinfo where infoNo=#{infoNo}
+</delete>
+
+<!-- 根据phonenumber删除diseaseinfo对象 -->
+<delete id="deleteByPhonenumber" parameterType="String">
+	delete from diseaseinfo where phonenumber=#{phonenumber}
+</delete>
+
+
+</mapper>

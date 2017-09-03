@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 功能暂时删除 -->
+
 <mapper namespace="mapping.selectdiseaseMapper">
 	<!-- 根据phonenumber查询得到selectdisease对象 -->
 	<select id="getByPhoneNumber" parameterType="String" resultType="SelectDisease">
@@ -10,6 +13,7 @@
 	<select id="getByDiseaseNo" parameterType="String" resultType="SelectDisease">
 		select * from selectdisease where diseaseNo=#{diseaseNo}
 	</select>
+	
 	
 	<!-- 创建selectdisease -->
 	<insert id="addSelectDisease" parameterType="SelectDisease">

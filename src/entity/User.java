@@ -7,16 +7,23 @@ import org.apache.ibatis.session.SqlSession;
 public class User {
 	private String phonenumber;
 	private String password;
+	private String firstname;         //中文的名
+	private String lastname;         //中文的姓
 	
 	
-	public User(String phonenumber,String password) {
+	public User(String phonenumber,String password,String firstname,String lastname) {
 		this.phonenumber=phonenumber;
 		this.password=password;
+		this.firstname=firstname;
+		this.lastname=lastname;
 	}
 	
 	public User() {
 		phonenumber=null;
 		password=null;
+		lastname=null;
+		firstname=null;
+		lastname=null;
 	}
 
 	public String getPhoneNumber() {
@@ -27,6 +34,13 @@ public class User {
 		return password;
 	}
 	
+	public String getFirstName() {
+		return firstname;
+	}
+	
+	public String getLastName() {
+		return lastname;
+	}
 	
 	public void setPhoneNumber(String phonenumber) {
 		this.phonenumber=phonenumber;
@@ -34,6 +48,14 @@ public class User {
 	
 	public void setPassword(String password) {
 		this.password=password;
+	}
+	
+	public void setFirstName(String firstname) {
+		this.firstname=firstname;
+	}
+	
+	public void setLastName(String lastname) {
+		this.lastname=lastname;
 	}
 	
 	@Override
@@ -52,10 +74,10 @@ public class User {
 		return retResult;
 	}
 	
-	public int update() {
+	public int changePassword() {
 		SqlSession sqlSession=MyBatisUtil.getSqlSession(true);
 		//映射sql的标识字符串
-		String statement="mapping.userMapper.updateUser";
+		String statement="mapping.userMapper.changePassword";
 		//执行修改密码操作
 		int retResult=sqlSession.update(statement,this);
 		sqlSession.close();
@@ -96,4 +118,25 @@ public class User {
 		return user;
 	}
 	
+	public int changeFirstName() {
+		SqlSession sqlSession=MyBatisUtil.getSqlSession(true);
+		//映射sql的标识字符串
+		String statement="mapping.userMapper.changeFirstName";
+		//执行修改firstname操作
+		int retResult=sqlSession.update(statement,this);
+		sqlSession.close();
+		System.out.println("修改firstname的操作结果为："+retResult);
+		return retResult;
+	}
+	
+	public int changeLastName() {
+		SqlSession sqlSession=MyBatisUtil.getSqlSession(true);
+		//映射sql的标识字符串
+		String statement="mapping.userMapper.changeLastName";
+		//执行修改lastname操作
+		int retResult=sqlSession.update(statement, this);
+		sqlSession.close();
+		System.out.println("修改lastname的操作结果为："+retResult);
+		return retResult;
+	}
 }

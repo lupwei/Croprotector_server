@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 为这个映射指定一个唯一的名字空间 -->
+<mapper namespace="mapping.diseasekindMapper">
+
+<!-- 根据diseaseNo查询得到一个diseasekind对象 -->
+<select id="getByDiseaseNo" parameterType="String" resultType="DiseaseKind">
+	select * from diseasekind where diseaseNo=#{diseaseNo}
+</select>
+
+<!-- 根据diseaseName查询得到一个diseasekind对象 -->
+<select id="getByDiseaseName" parameterType="String" resultType="DiseaseKind">
+	select * from diseasekind where diseaseName=#{diseaseName}
+</select>
+
+<!-- 创建一个diseasekind对象 -->
+<insert id="addDiseaseKind" parameterType="DiseaseKind">
+	insert into diseasekind(diseaseNo,diseaseName) values(#{diseaseNo},#{diseaseName})
+</insert> 
+
+<!-- 根据diseaseNo删除一个diseasekind对象 -->
+<delete id="deleteByDiseaseNo" parameterType="String">
+	delete from diseasekind where diseaseNo=#{diseaseNo}
+</delete>
+
+<!-- 根据diseaseName删除一个diseasekind对象 -->
+<delete id="deleteByDiseaseName" parameterType="String">
+	delete from diseasekind where diseaseName=#{diseaseName}
+</delete>
+
+<!-- 修改病虫害名称 -->
+<update id="changeDiseaseName" parameterType="DiseaseKind">
+	update diseasekind set diseaseName=#{diseaseName} where diseaseNo=#{diseaseNo}
+</update>
+
+<!-- 查询得到全部用户 -->
+<select id="getAllDiseaseKind" resultType="DiseaseKind">
+	select * from diseasekind
+</select>
+
+
+</mapper>

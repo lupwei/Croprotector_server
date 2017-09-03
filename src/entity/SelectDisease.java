@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-public class SelectDisease {
+public class SelectDisease {                    //这个功能暂时删掉了
 	private String phonenumber;
 	private String diseaseNo;
 	

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,6 +62,8 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	//需要返回用户的用户名及是否登陆成功的信息,所以要返回的data要是一个List<string>
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
 		CommonRequest req=new CommonRequest();
@@ -70,18 +74,48 @@ public class LoginServlet extends HttpServlet {
         user1=gson.fromJson(jsonStr,User.class);
 		
 		
-		CommonResponse res=new CommonResponse();
+		CommonResponse<List<String>> res=new CommonResponse<List<String>>(0,"success",null);
+		String loginMsg;
+		List<String> list=new ArrayList<String>(); 
 		User user2=user1.get();
-		if(user2 != null) {                        //用户名与数据库匹配，判断密码是否相符
-			if(user1.getPassword()==user2.getPassword()) {
-				res.setResMsg("登录成功");
+		String phonenumber=user1.getPhoneNumber();
+		
+		System.out.println(phonenumber);
+		
+		if(phonenumber.length()==11) {
+			if(user2 != null) {    
+				//用户名与数据库匹配，判断密码是否相符
+				String password1=user1.getPassword();
+				String password2=user2.getPassword();
+				if(password1.equals(password2)) {   //登陆成功后服务器要返回用户名
+					res.setCode(0);
+					String firstname=user2.getFirstName();
+					String lastname=user2.getLastName();
+					loginMsg="登录成功";
+					list.add(loginMsg);
+					list.add(firstname);
+					list.add(lastname);
+					res.setData(list);
+				}
+				else {
+					res.setCode(2);
+					loginMsg="登录失败，密码错误";
+					list.add(loginMsg);
+					res.setData(list);
+				}
 			}
 			else {
-				res.setResMsg("登录失败，密码错误");
+				res.setCode(3);
+				loginMsg="该手机号未注册";
+				list.add(loginMsg);
+				res.setData(list);
 			}
 		}
 		else {
-			res.setResMsg("该手机号未注册");
+			res.setCode(1);
+			loginMsg="手机号不符合要求";
+			list.add(loginMsg);
+			res.setData(list);
 		}
 		
 		//第三步：将结果封装成json格式返回给客户端,但实际网络传输时还是传输json的字符串

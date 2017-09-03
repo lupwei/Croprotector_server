@@ -71,24 +71,34 @@ public class RegisterServlet extends HttpServlet {
 		
 		CommonResponse<String> res=new CommonResponse<String>(0,"success","");
 		User user2=user1.get();
-		if(user2 != null) {
-			res.setData("该账号已存在");
-		}
-		else {                                
-			int result=user1.add();
-			if(result>0) {
-				res.setData("注册成功");
+		String phonenumber=user1.getPhoneNumber();
+		System.out.println(phonenumber);
+		if(phonenumber.length()==11) {
+			if(user2 != null) {
+				res.setCode(2);
+				res.setData("该账号已存在");
 			}
-			else {
-				res.setData("注册失败");
+			else {                                
+				int result=user1.add();
+				if(result>0) {
+					res.setCode(0);
+					res.setData("注册成功");
+				}
+				else {
+					res.setCode(3);
+					res.setData("注册失败");
+				}
 			}
 		}
-		
+		else {
+			res.setCode(1);
+			res.setData("手机号不符合要求");
+		}
 		//第三步：将结果封装成json格式返回给客户端,但实际网络传输时还是传输json的字符串
 		//json只是提供了特定的字符串拼接格式
 		String resStr=gson.toJson(res);
 		System.out.println("返回报文的json字符串为："+resStr);
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html;charset=utf-8");          //记着设置字符编码格式，不然汉字是乱码
 		PrintWriter pw=response.getWriter();
 		pw.println(resStr);
 		pw.flush();
