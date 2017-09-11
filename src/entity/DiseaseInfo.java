@@ -7,11 +7,13 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
 public class DiseaseInfo {
+	//infoNO，时间，手机号，经纬度都是在客户端已经赋好值不会在服务器端改动的东西
+	
 	private String infoNo;
 	private String diseaseNo;
-	private DiseaseKind diseasekind;
-	private String picture;                     //图片的url
-	private Date time;
+	private DiseaseKind diseaseKind;
+	private String picture;                     //与客户端通信的的时候是Base64格式的字符串，存入、取出数据库的时候是图片的url
+	private String infoTime;
 	private double longitude;                   //经度
 	private double latitude;                    //纬度
 	private String phonenumber;
@@ -27,15 +29,15 @@ public class DiseaseInfo {
 	}
 	
 	public void setDiseaseKind(DiseaseKind diseasekind) {
-		this.diseasekind=diseasekind;
+		this.diseaseKind=diseasekind;
 	}
 	
 	public void setPicture(String picture) {
 		this.picture=picture;
 	}
 	
-	public void setTime(Date time) {
-		this.time=time;
+	public void setInfoTime(String time) {
+		this.infoTime=time;
 	}
 	
 	public void setLongitude(double longitude) {
@@ -44,6 +46,10 @@ public class DiseaseInfo {
 	
 	public void setLatitude(double latitude) {
 		this.latitude=latitude;
+	}
+	
+	public void setPhoneNumber(String phonenumber) {
+		this.phonenumber=phonenumber;
 	}
 	
 	public String getInfoNo() {
@@ -55,15 +61,15 @@ public class DiseaseInfo {
 	}
 	
 	public DiseaseKind getDiseaseKind() {
-		return diseasekind;
+		return diseaseKind;
 	}
 	
 	public String getPicture() {
 		return picture;
 	}
 	
-	public Date getTime() {
-		return time;
+	public String getInfoTime() {
+		return infoTime;
 	}
 	
 	public double getLongitude() {

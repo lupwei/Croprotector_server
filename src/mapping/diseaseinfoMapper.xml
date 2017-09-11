@@ -5,54 +5,55 @@
 <mapper namespace="mapping.diseaseinfoMapper">
 
 <!-- 根据infoNo查询得到一个diseaseinfo对象,带diseasekind信息-->
-<select id="getByInfoNo" parameterType="String" resultMap="DiseaseInfoResultMap">
+<select id="getByInfoNo" parameterType="String" resultMap="DiseaseInfoResultMap1">
 	select * from diseaseinfo,diseasekind where diseaseinfo.diseaseNo=diseasekind.diseaseNo and diseaseinfo.infoNo=#{infoNo}
 </select>
 <!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
-<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap1">
 	<id property="infoNo" column="infoNo"/>
 	<result property="picture" column="picture"/>
-	<result property="time" column="time"/>
+	<result property="infoTime" column="time"/>
 	<result property="longitude" column="longitude"/>
 	<result property="latitude" column="latitude"/>
 	<result property="phonenumber" column="phonenumner"/>
-	<association property="diseasekind" javaType="DiseaseKind">
+	<association property="diseaseKind" javaType="DiseaseKind">
 		<id property="diseaseNo" column="diseaseNo"/>
 		<result property="diseaseName" column="diseaseName"/>
 	</association>
 </resultMap>
 
 <!-- 根据时间查询得到一组diseaseinfo对象 -->
-<select id="getByTime" resultMap="DiseaseInfo">
+<select id="getByTime" resultMap="DiseaseInfoResultMap2">
 	select * from diseaseinfo,diseasekind where cast(diseaseinfo.time as datetime) between #{time1} and #{time2} and diseaseinfo.phonenumber=#{phonenumber} and diseaseinfo.diseaseNo=diseasekind.diseaseNo
 </select>
 <!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
-<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap2">
 	<id property="infoNo" column="infoNo"/>
 	<result property="picture" column="picture"/>
-	<result property="time" column="time"/>
+	<result property="infoTime" column="time"/>
 	<result property="longitude" column="longitude"/>
 	<result property="latitude" column="latitude"/>
 	<result property="phonenumber" column="phonenumner"/>
-	<association property="diseasekind" javaType="DiseaseKind">
+	<association property="diseaseKind" javaType="DiseaseKind">
 		<id property="diseaseNo" column="diseaseNo"/>
 		<result property="diseaseName" column="diseaseName"/>
 	</association>
 </resultMap>
 
 <!-- 根据phonenumber查询得到一组diseaseinfo对象 -->
-<select id="getByPhonenumber" parameterType="String" resultType="DiseaseInfo">
+<select id="getByPhonenumber" parameterType="String" resultMap="DiseaseInfoResultMap3">
 	select * from diseaseinfo,diseasekind where diseaseinfo.phonenumber=#{phonenumber} and diseaseinfo.diseaseNo=diseasekind.diseaseNo
 </select>
 <!-- 使用resultMap映射实体类和字段之间的一一对应关系 -->
-<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap">
+<resultMap type="DiseaseInfo" id="DiseaseInfoResultMap3">
 	<id property="infoNo" column="infoNo"/>
 	<result property="picture" column="picture"/>
-	<result property="time" column="time"/>
+	<result property="infoTime" column="time"/>
 	<result property="longitude" column="longitude"/>
 	<result property="latitude" column="latitude"/>
 	<result property="phonenumber" column="phonenumner"/>
-	<association property="diseasekind" javaType="DiseaseKind">
+	<result property="diseaseNo" column="diseaseNo"/>
+	<association property="diseaseKind" javaType="DiseaseKind">
 		<id property="diseaseNo" column="diseaseNo"/>
 		<result property="diseaseName" column="diseaseName"/>
 	</association>
