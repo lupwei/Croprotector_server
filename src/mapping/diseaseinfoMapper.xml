@@ -62,7 +62,7 @@
 
 <!-- 创建diseaseinfo对象 -->
 <insert id="addDiseaseInfo" parameterType="DiseaseInfo">
-	insert into diseaseinfo(infoNo,diseaseNo,picture,time,longitude,latitude,phonenumber) values(#{infoNo},#{diseaseNo},#{picture},#{time},#{longitude},#{latitude},#{phonenumber})
+	insert into diseaseinfo(infoNo,diseaseNo,picture,time,longitude,latitude,phonenumber) values(#{infoNo},#{diseaseNo},#{picture},#{infoTime},#{longitude},#{latitude},#{phonenumber})
 </insert>
 
 

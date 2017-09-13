@@ -91,10 +91,6 @@ public class TestPictureServlet extends HttpServlet {
 		diseaseinfo1.setDiseaseKind(diseaseKind1);
 		diseaseinfo1.setDiseaseNo(diseaseKind1.getDiseaseNo());
 		diseaseinfo1.setPicture(url);
-		double longitude=SetLocation.setLongitude();
-		diseaseinfo1.setLongitude(longitude);
-		double latitude=SetLocation.setLatitude();
-		diseaseinfo1.setLatitude(latitude);
 		int result=diseaseinfo1.addDiseaseInfo();          //数据库操作
 		
 		//应该还有一个没有识别出结果的处理情况，但是此处目前并没有模型
